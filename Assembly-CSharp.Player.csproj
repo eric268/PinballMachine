@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scrips\FlipperMovement.cs" />
     <Compile Include="Assets\Scrips\CoilSpring.cs" />
+    <Compile Include="Assets\Scrips\BallPhysics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

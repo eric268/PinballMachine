@@ -4,71 +4,54 @@ using UnityEngine;
 
 public class FlipperMovement : MonoBehaviour
 {
+  [SerializeField]
+    private float m_fSpringConst = 0f;
     [SerializeField]
-    private Rigidbody m_rigidbody;
-
+    private float m_fOriginalPos = 0f;
     [SerializeField]
-    private bool m_bAPressed;
-
+    private float m_fPressedPos = 0f;
     [SerializeField]
-    private bool m_bDPressed;
-
+    private float m_fFlipperSpringDamp = 0f;
     [SerializeField]
-    private Quaternion m_leftInitialRotation;
+    private KeyCode m_flipperInput;
 
-    [SerializeField]
-    private Vector3 m_vRotationAngle;
+    private HingeJoint m_hingeJoint = null;
+    private JointSpring m_jointSpring;
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        m_rigidbody = GetComponent<Rigidbody>();
-        if (!m_rigidbody)
-        {
-            Debug.LogError("Could not find rigid body");
-        }
-        m_bAPressed = false;
-        m_bDPressed = false;
+        m_hingeJoint = GetComponent<HingeJoint>();
+        m_hingeJoint.useSpring = true;
 
-        m_leftInitialRotation = transform.rotation;
+        m_jointSpring = new JointSpring();
+        m_jointSpring.spring = m_fSpringConst;
+        m_jointSpring.damper = m_fFlipperSpringDamp;
 
-        m_vRotationAngle = transform.InverseTransformDirection(-Vector3.up);
-
+        m_hingeJoint.spring = m_jointSpring;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnFlipperPressedInternal()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        m_jointSpring.targetPosition = m_fPressedPos;
+        m_hingeJoint.spring = m_jointSpring;
+    }
+
+    private void OnFlipperReleasedInternal()
+    {
+        m_jointSpring.targetPosition = m_fOriginalPos;
+        m_hingeJoint.spring = m_jointSpring;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(m_flipperInput))
         {
-            m_bAPressed = true;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            m_bDPressed = true;
-        }    
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            m_bAPressed = false;
-        }
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            m_bDPressed = false;
+            OnFlipperPressedInternal();
         }
 
-        if (name == "Left_Flipper" && m_bAPressed)
+        if (Input.GetKeyUp(m_flipperInput))
         {
-            Debug.LogError(m_leftInitialRotation);
-            //m_rigidbody.MoveRotation(m_leftInitialRotation  * Quaternion.AngleAxis(10, m_vRotationAngle));
-
-            transform.rotation *= Quaternion.AngleAxis(10, m_vRotationAngle);
-
-        }
-        else if (name == "Left_Flipper" && !m_bAPressed)
-        {
-            m_rigidbody.MoveRotation(m_leftInitialRotation);
+            OnFlipperReleasedInternal();
         }
     }
 }
