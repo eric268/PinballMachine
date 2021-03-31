@@ -59,6 +59,8 @@
     <Compile Include="Assets\Scrips\FlipperMovement.cs" />
     <Compile Include="Assets\Scrips\CoilSpring.cs" />
     <Compile Include="Assets\Scrips\BallPhysics.cs" />
+    <Compile Include="Assets\MoveBlocker.cs" />
+    <Compile Include="Assets\GameVariables.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

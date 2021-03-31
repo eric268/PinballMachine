@@ -68,22 +68,21 @@ public class BallPhysics : MonoBehaviour
             }
             else if (collision.transform.name == "top_bumper" + i)
             {
-                ChangeBallSpeed(collision, 1, true, 5.0f);
+                ChangeBallSpeed(collision, 1, true, 4.0f);
                 break;
             }
             else if (collision.transform.name == "BottomWedge" + i)
             {
                 Vector3 normal =  collision.contacts[0].normal;
-                Vector3 LBumperNormal = new Vector3(0.9f, 0.3f, 0.4f);
-                Vector3 RBumperNormal = new Vector3(-0.9f, 0.3f, 0.4f);
+                Vector3 LBumperNormal = new Vector3(0.8f, 0.4f, 0.4f);
+                Vector3 RBumperNormal = new Vector3(-0.8f, 0.4f, 0.4f);
 
                 //Essentailly checking if the collision normal is equal to the normal of the hypothenus side of the bumper
                 //Since floating point percision makes it difficult to check equality between vectors I essentailly check if the distance between
                 //the vectors is extremely small aka they are the same
                 if (Vector3.SqrMagnitude(normal - LBumperNormal) < 0.01f || Vector3.SqrMagnitude(normal - RBumperNormal) < 0.01f)
                 {
-                    ChangeBallSpeed(collision, 1, true, 4.0f);
-                    Debug.LogError(collision.contacts[0].normal);
+                    ChangeBallSpeed(collision, 1, true, 3.0f);
                 }
 
                 break;
@@ -97,7 +96,7 @@ public class BallPhysics : MonoBehaviour
         }
         if (collision.transform.name == "MoonBumper")
         {
-            ChangeBallSpeed(collision, 1, true, 3.0f);
+            ChangeBallSpeed(collision, 1, true, 2.0f);
         }
     }
 }

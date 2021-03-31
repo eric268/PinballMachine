@@ -57,6 +57,10 @@ public class CoilSpring : MonoBehaviour
             m_attachedBody.isKinematic = true;
             spaceDown = true;
         }
+        if (Input.GetKeyUp("space"))
+        {
+            spaceDown = false;
+        }
 
         if (m_bCollidingWithSpring)
         {
@@ -68,22 +72,22 @@ public class CoilSpring : MonoBehaviour
     {
         if (spaceDown)
         {
-            float z = m_attachedBody.position.z -  m_fPullSpeed;
-            float y = m_attachedBody.position.y - m_fPullSpeed;
-            float xRot = transform.rotation.x;
-
-            m_attachedBody.MovePosition(new Vector3(m_attachedBody.position.x, y, z));
-
             m_iPullCounter++;
-            if (m_iPullCounter  >= 145)
+
+            if (m_iPullCounter < 145.0f)
             {
-                m_attachedBody.isKinematic = false;
-                spaceDown = false;
-                m_iPullCounter = 0;
+                float z = m_attachedBody.position.z - m_fPullSpeed;
+                float y = m_attachedBody.position.y - m_fPullSpeed;
+                float xRot = transform.rotation.x;
+
+                m_attachedBody.MovePosition(new Vector3(m_attachedBody.position.x, y, z));
             }
         }
-
-  
+        if (!spaceDown)
+        {
+            m_attachedBody.isKinematic = false;
+            m_iPullCounter = 0;
+        }
         UpdateSpringForce();
     }
 
