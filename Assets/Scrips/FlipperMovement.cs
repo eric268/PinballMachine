@@ -20,9 +20,11 @@ public class FlipperMovement : MonoBehaviour
 
     private void Start()
     {
+        //Want one degree of freedom for flippers
         m_hingeJoint = GetComponent<HingeJoint>();
         m_hingeJoint.useSpring = true;
 
+        //Initalizes joint spring with game values
         m_jointSpring = new JointSpring();
         m_jointSpring.spring = m_fSpringConst;
         m_jointSpring.damper = m_fFlipperSpringDamp;
@@ -32,12 +34,14 @@ public class FlipperMovement : MonoBehaviour
 
     private void OnFlipperPressedInternal()
     {
+        //Moves flipper to end location
         m_jointSpring.targetPosition = m_fPressedPos;
         m_hingeJoint.spring = m_jointSpring;
     }
 
     private void OnFlipperReleasedInternal()
     {
+        //Returns flipper to start location
         m_jointSpring.targetPosition = m_fOriginalPos;
         m_hingeJoint.spring = m_jointSpring;
     }

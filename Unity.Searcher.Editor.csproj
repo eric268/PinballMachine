@@ -59,12 +59,12 @@
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherItem.cs" />
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherAdapter.cs" />
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\Searcher.cs" />
-    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherControl.cs" />
-    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\AssemblyInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherHighlighter.cs" />
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherWindow.cs" />
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherDatabaseBase.cs" />
     <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherDatabase.cs" />
+    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherControl.cs" />
+    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\AssemblyInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Searcher\SearcherHighlighter.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Library\PackageCache\com.unity.searcher@4.3.1\Editor\Unity.Searcher.Editor.asmdef" />
@@ -302,11 +302,11 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.5\net35\unity-custom\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>Library\PackageCache\com.unity.render-pipelines.core@10.2.2\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.5\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.0f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>

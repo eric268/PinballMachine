@@ -14,15 +14,13 @@ public class CoilSpring : MonoBehaviour
     private float m_fMass;
     [SerializeField]
     private Rigidbody m_attachedBody = null;
-    [SerializeField]
-    private bool m_bIsBungee = false;
 
     [SerializeField]
     private float m_fPullSpeed = 0.003f;
 
     private Vector3 m_vForce;
     private Vector3 m_vPrevVel;
-    private bool spaceDown = false;
+    private bool m_bSpaceDown = false;
 
     private bool m_bCollidingWithSpring = false;
 
@@ -30,24 +28,13 @@ public class CoilSpring : MonoBehaviour
 
     private void Start()
     {
-        
-
         m_attachedBody = GameObject.Find("PlungerTop").GetComponent<Rigidbody>();
         if (!m_attachedBody)
         {
             Debug.LogError("Could not find attached rigid body");
         }
-
         m_fMass = m_attachedBody.mass;
-
-       
-
         m_bCollidingWithSpring = false;
-        // If you want to test the CoilSpring, or Bridge scenes...
-        // ...remember to remove the comment for CALC_SPRING_COEFF
-#if CALC_SPRING_COEFF
-        m_fSpringConstant = CalculateSpringConstant();
-#endif
     }
 
     private void Update()
@@ -55,13 +42,13 @@ public class CoilSpring : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             m_attachedBody.isKinematic = true;
-            spaceDown = true;
+            m_bSpaceDown = true;
         }
         if (Input.GetKeyUp("space"))
         {
-            spaceDown = false;
+            m_bSpaceDown = false;
         }
-
+        //Want to stop plunger movement if it hs reached the stopper
         if (m_bCollidingWithSpring)
         {
             m_attachedBody.isKinematic = true;
@@ -70,20 +57,20 @@ public class CoilSpring : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (spaceDown)
+        if (m_bSpaceDown)
         {
             m_iPullCounter++;
-
+            //This ensure the spring cannot be pulled past the pinball case
             if (m_iPullCounter < 145.0f)
             {
+                //Only moving on then z,y planes
                 float z = m_attachedBody.position.z - m_fPullSpeed;
                 float y = m_attachedBody.position.y - m_fPullSpeed;
-                float xRot = transform.rotation.x;
-
                 m_attachedBody.MovePosition(new Vector3(m_attachedBody.position.x, y, z));
             }
         }
-        if (!spaceDown)
+        //Shoot the ball
+        if (!m_bSpaceDown)
         {
             m_attachedBody.isKinematic = false;
             m_iPullCounter = 0;
@@ -91,28 +78,12 @@ public class CoilSpring : MonoBehaviour
         UpdateSpringForce();
     }
 
-    private float CalculateSpringConstant()
-    {
-        // k = F / dX
-        // F = m * a
-        // k = m * a / (xf - xi)
-
-        float fDX = (m_vRestPos - m_attachedBody.transform.position).magnitude;
-
-        if (fDX <= 0f)
-        {
-            return Mathf.Epsilon;
-        }
-
-        return (m_fMass * Physics.gravity.y) / (fDX);
-    }
-
     private void UpdateSpringForce()
     {
-        // F = -kx
-        // F = -kx -bv
 
+        //The first line is Hooke's law
         m_vForce = -m_fSpringConstant * (m_vRestPos - m_attachedBody.transform.position) -
+            //This allows for dampening otherwise spring would extend and contract forever
             m_fDampingConstant * (m_attachedBody.velocity - m_vPrevVel);
 
         m_attachedBody.AddForce(m_vForce, ForceMode.Acceleration);
@@ -122,16 +93,6 @@ public class CoilSpring : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(m_vRestPos, 1f);
-
-        if (m_attachedBody)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(m_attachedBody.transform.position, 1f);
-
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, m_attachedBody.transform.position);
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
